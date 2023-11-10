@@ -2,7 +2,7 @@
 
 # Docker configuration backend
 providers:
-  docker:
+  docker: 
     defaultRule: "Host(`{{ trimPrefix `/` .Name }}.docker.localhost`)"
 
 # API and dashboard configuration

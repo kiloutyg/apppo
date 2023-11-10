@@ -3,21 +3,22 @@ version: "3.8"
 services:
   traefik:
     image: traefik:v3.0
+    # command: --api.insecure=true --providers.docker
     ports:
       - "80:80"
       - "8070:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      # - ./traefik.yml:/etc/traefik/traefik.yml
+      - ./traefik.yml:/etc/traefik/traefik.yml
     networks:
       vpcbr:
         ipv4_address: 172.24.0.254
-      docauposte2_vpcbr:
-        ipv4_address: 172.21.0.254
-      efnc_vpcbr:
-        ipv4_address: 172.22.0.254
-      polyvalencefontaine_vpcbr:
-        ipv4_address: 172.25.0.254
+      # docauposte2_vpcbr:
+      #   ipv4_address: 172.21.0.254
+      # efnc_vpcbr:
+      #   ipv4_address: 172.22.0.254
+      # polyvalencefontaine_vpcbr:
+      #   ipv4_address: 172.25.0.254
 
 networks:
   vpcbr:
@@ -26,9 +27,9 @@ networks:
       config:
         - subnet: 172.24.0.0/16
           gateway: 172.24.0.1
-  docauposte2_vpcbr:
-   external: true
-  efnc_vpcbr:
-    external: true
-  polyvalencefontaine_vpcbr:
-    external: true
+  # docauposte2_vpcbr:
+  #  external: true
+  # efnc_vpcbr:
+  #   external: true
+  # polyvalencefontaine_vpcbr:
+  #   external: true
