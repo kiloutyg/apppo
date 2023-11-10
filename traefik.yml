@@ -3,8 +3,16 @@
 # Docker configuration backend
 providers:
   docker: 
-    defaultRule: "Host(`{{ trimPrefix `/` .Name }}.docker.localhost`)"
+    # defaultRule: "Host(`{{ trimPrefix `/` .Name }}.docker.localhost`)"
+    exposedByDefault: false
+    network: docauposte2_vpcb
 
 # API and dashboard configuration
 api:
   insecure: true
+  dashboard: true
+
+#Entrypoint configuration
+entryPoints:
+  web:
+    address: ":80"

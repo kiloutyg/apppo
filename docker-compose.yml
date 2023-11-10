@@ -13,12 +13,12 @@ services:
     networks:
       vpcbr:
         ipv4_address: 172.24.0.254
-      # docauposte2_vpcbr:
-      #   ipv4_address: 172.21.0.254
-      # efnc_vpcbr:
-      #   ipv4_address: 172.22.0.254
-      # polyvalencefontaine_vpcbr:
-      #   ipv4_address: 172.25.0.254
+      docauposte2_vpcbr:
+        ipv4_address: 172.21.0.254
+      efnc_vpcbr:
+        ipv4_address: 172.22.0.254
+      polyvalencefontaine_vpcbr:
+        ipv4_address: 172.25.0.254
 
 networks:
   vpcbr:
@@ -27,9 +27,9 @@ networks:
       config:
         - subnet: 172.24.0.0/16
           gateway: 172.24.0.1
-  # docauposte2_vpcbr:
-  #  external: true
-  # efnc_vpcbr:
-  #   external: true
-  # polyvalencefontaine_vpcbr:
-  #   external: true
+  docauposte2_vpcbr:
+   external: true
+  efnc_vpcbr:
+    external: true
+  polyvalencefontaine_vpcbr:
+    external: true
