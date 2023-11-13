@@ -3,8 +3,8 @@
 # Docker configuration backend
 providers:
   docker: 
-    # exposedByDefault: false
-    exposedByDefault: true
+    exposedByDefault: false
+    # exposedByDefault: true
 
     network: vpcbr
 
@@ -17,5 +17,3 @@ api:
 entryPoints:
   web:
     address: ":80"
-  # phpmyadmin: 
-  #   address: ":8082"
