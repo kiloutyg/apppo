@@ -1,11 +1,12 @@
 ## traefik.yml
 
 # Docker configuration backend
-# providers:
-#   docker: 
-#     # defaultRule: "Host(`{{ trimPrefix `/` .Name }}.docker.localhost`)"
-#     # exposedByDefault: false
-#     network: docauposte2_vpcbr
+providers:
+  docker: 
+    # exposedByDefault: false
+    exposedByDefault: true
+
+    network: vpcbr
 
 # API and dashboard configuration
 api:
@@ -16,13 +17,5 @@ api:
 entryPoints:
   web:
     address: ":80"
-
-http:
-  routers:
-    to-docauposte:
-      rule: "Host(`docauposte`) && PathPrefix(`/docauposte/`)"
-      service: to-docauposte
-      entryPoints:
-        - web
-        
-services:
+  # phpmyadmin: 
+  #   address: ":8082"
