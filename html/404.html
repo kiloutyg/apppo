@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page de redirection</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            background-color: lightgrey;
+        }
+        .full-height {
+            height: 90%;
+        }
+        .vertical-horizontal-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .top-band {
+            background-color: darkgrey;
+            padding: 40px;
+        }
+        .top-band img {
+            height: 80px;
+        }
+        .top-band h1 {
+            color: white;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-band d-flex align-items-center">
+        <!-- Ensure the path to the image is correct -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Plastic_Omnium.svg/1200px-Plastic_Omnium.svg.png" alt="Logo">
+        <h1 class="ml-5"><strong>P.O.A.E. Langres</strong></h1>
+    </div>
+    <div class="container full-height">
+        <div class="vertical-horizontal-center">
+                <button onclick="window.location.href = `http://${window.location.hostname}/docauposte`" class="btn btn-primary m-5 btn-lg btn-block"><strong>Docauposte</strong></button>
+                <button onclick="window.location.href = `http://${window.location.hostname}/efnc`" class="btn btn-secondary m-5 btn-lg btn-block"><strong>eFNC</strong></button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

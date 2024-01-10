@@ -3,9 +3,8 @@
 # Docker configuration backend
 providers:
   docker: 
-    exposedByDefault: false
-    # exposedByDefault: true
-
+    # exposedByDefault: false
+    exposedByDefault: true
     network: vpcbr
 
 # API and dashboard configuration
