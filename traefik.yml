@@ -2,7 +2,7 @@
 
 # Docker configuration backend
 providers:
-  docker: 
+  docker:
     # exposedByDefault: false
     exposedByDefault: true
     network: vpcbr
@@ -16,3 +16,5 @@ api:
 entryPoints:
   web:
     address: ":80"
+  mariadb:
+    address: ":3306"
