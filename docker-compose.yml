@@ -18,6 +18,8 @@ services:
         ipv4_address: 172.21.0.254
       efnc_vpcbr:
         ipv4_address: 172.22.0.254
+      charte_vpcbr:
+        ipv4_address: 172.23.0.254
 
   homepage:
     image: nginx  # Example using nginx to serve custom error pages
@@ -44,4 +46,6 @@ networks:
   docauposte2_vpcbr:
     external: true
   efnc_vpcbr:
+    external: true
+  charte_vpcbr:
     external: true
