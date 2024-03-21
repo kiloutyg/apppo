@@ -18,14 +18,9 @@ services:
         ipv4_address: 172.21.0.254
       efnc_vpcbr:
         ipv4_address: 172.22.0.254
-<<<<<<< HEAD
       posign_vpcbr:
         ipv4_address: 172.23.0.254
 
-=======
-      charte_vpcbr:
-        ipv4_address: 172.23.0.254
->>>>>>> 50129cb8ca8989bff3233651c406ee8df613d1ca
 
   homepage:
     image: nginx  # Example using nginx to serve custom error pages
@@ -53,9 +48,5 @@ networks:
     external: true
   efnc_vpcbr:
     external: true
-<<<<<<< HEAD
   posign_vpcbr:
-=======
-  charte_vpcbr:
->>>>>>> 50129cb8ca8989bff3233651c406ee8df613d1ca
     external: true
