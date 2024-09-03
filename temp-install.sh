@@ -5,7 +5,7 @@ wget https://raw.githubusercontent.com/kiloutyg/docauposte2/main/install-docaupo
 wget https://raw.githubusercontent.com/kiloutyg/efnc/main/install-eFNC2.sh  && chmod +x install-eFNC2.sh && bash install-eFNC2.sh;
 
 while true; do
-read -p "Do you want to install opsign ? (yes/no)" 
+read -p "Do you want to install opsign ? (yes/no) : " 
 # Check if the user answered yes or no
     if [ "${ANSWER}" == "yes" ] || [ "${ANSWER}" == "no" ]; then 
         break
