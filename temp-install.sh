@@ -5,7 +5,7 @@ wget https://raw.githubusercontent.com/kiloutyg/docauposte2/main/install-docaupo
 wget https://raw.githubusercontent.com/kiloutyg/efnc/main/install-eFNC2.sh  && chmod +x install-eFNC2.sh && bash install-eFNC2.sh;
 
 while true; do
-read -p "Do you want to install posign ? (yes/no)" 
+read -p "Do you want to install opsign ? (yes/no)" 
 # Check if the user answered yes or no
     if [ "${ANSWER}" == "yes" ] || [ "${ANSWER}" == "no" ]; then 
         break
@@ -15,9 +15,9 @@ read -p "Do you want to install posign ? (yes/no)"
 done
 
 if [ "${ANSWER}" == "yes" ]; then
-    wget https://raw.githubusercontent.com/kiloutyg/posign/main/install-posign.sh  && chmod +x install-posign.sh && bash install-posign.sh;
+    wget https://raw.githubusercontent.com/kiloutyg/opsign/main/install-opsign.sh  && chmod +x install-opsign.sh && bash install-opsign.sh;
     else
-    echo "posign not installed";
+    echo "opsign not installed";
 fi
 
 
