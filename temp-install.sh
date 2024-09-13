@@ -23,5 +23,5 @@ fi
 
 git clone https://github.com/kiloutyg/apppo.git;
 cd apppo;
-sudo chmod 777 ./html -R;
+sudo chmod -R 0755 html;
 docker compose up --build -d;
