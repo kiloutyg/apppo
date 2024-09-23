@@ -8,9 +8,6 @@ spec:
   containers:
   - args:
     - '--accesslog=true'
-    - '--tracing=true'
-    - '--tracing.service=jaeger'
-    - '--metrics.prometheus=true'
     - '--log.level=info'
     - '--providers.docker=true'
     - '--api.dashboard=true'
@@ -28,10 +25,9 @@ spec:
       protocol: TCP
     volumeMounts:
     - mountPath: /var/run/docker.sock:z
-      name: podman.sock-host
+      name: run-user-846632034-podman-podman.sock-host-1
   volumes:
   - hostPath:
-      path: "/run/user/846632034/podman/podman.sock"
-      # path: "/run/podman/podman.sock"
+      path: /run/user/846632034/podman/podman.sock
       type: File
-    name: podman.sock-host
+    name: run-user-846632034-podman-podman.sock-host-1
