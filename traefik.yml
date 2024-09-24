@@ -1,24 +1,18 @@
 ## traefik.yml
 
 # Docker configuration backend
-# providers:
-#   docker:
-#     exposedByDefault: true
-#     network: apppo_vpcbr
-#   kubernetes:
-#     exposedByDefault: true
-#     network: apppo_vpcbr
+providers:
+  docker:
+    exposedByDefault: true
 
 # API and dashboard configuration
-# api:
-#   insecure: true
-#   dashboard: true
+api:
+  insecure: true
+  dashboard: true
 
 #Entrypoint configuration
-# entryPoints:
-#   web:
-#     address: ":80"
-#   mariadb:
-#     address: ":3306"
-#   dashboard:
-#     address: ":8080"
+entryPoints:
+  web:
+    address: ":80"
+  mariadb:
+    address: ":3306"
