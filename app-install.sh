@@ -1,5 +1,19 @@
 #!/bin/bash
+# Ask the user for name of its github user 
+while true; do
+    read -p "Name of your github user (example: polangres) :  " GITHUB_USER
+    if contains_uppercase "$GITHUB_USER"; then
+        echo "The github user name should not contain uppercase characters. Please try again."
+    else
+        break
+    fi
+    if [ -z "${GITHUB_USER}" ]
+    then
+        echo "The github user name should not be empty. Please try again."
+    fi
+done
 
+# Ask the user if he wants to install the app with podman
 while true; do
 read -p "Do you want to install the app with podman ? (yes/no) : "  ANSWER;
 # Check if the user answered yes or no
@@ -15,7 +29,7 @@ if [ "${PODMAN}" == "yes" ]; then
     sudo sed -i "$ a\\${USER}:100000:65536" /etc/subuid;
     sudo sed -i "$ a\\${USER}:100000:65536" /etc/subgid;
     # Run commands as root
-    sudo bash -c 'echo "net.ipv4.ip_unprivileged_port_start=80" > /etc/sysctl.d/user_priv_ports.conf';
+    sudo bash -c 'echo "net.ipv4.ip_unprivileged_port_start=25" > /etc/sysctl.conf';
 
     # Apply the changes
     sudo sysctl --system;
@@ -28,9 +42,9 @@ if [ "${PODMAN}" == "yes" ]; then
 fi
 
 
-wget https://raw.githubusercontent.com/kiloutyg/docauposte2/main/install-docauposte2.sh   && chmod +x install-docauposte2.sh && bash install-docauposte2.sh;
+wget https://raw.githubusercontent.com/${GITHUB_USER}/docauposte2/main/install-docauposte2.sh   && chmod +x install-docauposte2.sh && bash install-docauposte2.sh ${GITHUB_USER} ${PODMAN};
 
-wget https://raw.githubusercontent.com/kiloutyg/efnc/main/install-eFNC2.sh  && chmod +x install-eFNC2.sh && bash install-eFNC2.sh;
+wget https://raw.githubusercontent.com/${GITHUB_USER}/efnc/main/install-eFNC2.sh  && chmod +x install-eFNC2.sh && bash install-eFNC2.sh ${GITHUB_USER} ${PODMAN};
 
 while true; do
 read -p "Do you want to install opsign ? (yes/no) : "  ANSWER;
@@ -43,13 +57,18 @@ read -p "Do you want to install opsign ? (yes/no) : "  ANSWER;
 done
 
 if [ "${ANSWER}" == "yes" ]; then
-    wget https://raw.githubusercontent.com/kiloutyg/opsign/main/install-opsign.sh  && chmod +x install-opsign.sh && bash install-opsign.sh;
+    wget https://raw.githubusercontent.com/${GITHUB_USER}/opsign/main/install-opsign.sh  && chmod +x install-opsign.sh && bash install-opsign.sh ${GITHUB_USER} ${PODMAN};
     else
     echo "opsign not installed";
 fi
 
 
-git clone https://github.com/kiloutyg/apppo.git;
+git clone https://github.com/${GITHUB_USER}/apppo.git;
+
 cd apppo;
-sudo chmod 777 ./html -R;
-docker compose up --build -d;
+if [ "${PODMAN}" == "yes" ]; then
+    envsubst < template.yaml > apppo.yaml;
+    podman play kube apppo.yaml;
+    else
+    docker compose up --build -d;
+fi
