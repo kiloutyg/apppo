@@ -31,9 +31,22 @@ read -p "Do you want to install the app with podman ? (yes/no) : " PODMAN;
 done
 
 if [ "${PODMAN}" == "yes" ]; then
-    # Add user to subuid and subgid
-    sudo sed -i "$ a\\${USER}:100000:65536" /etc/subuid;
-    sudo sed -i "$ a\\${USER}:100000:65536" /etc/subgid;
+
+    # Add user to subuid and subgid if not already present
+    add_to_file() {
+        local file="$1"
+        local entry="$2"
+        if ! grep -q "^${entry}$" "$file"; then
+            echo "$entry" | sudo tee -a "$file" > /dev/null
+            echo "Added $entry to $file"
+        else
+            echo "$entry already exists in $file"
+        fi
+    }
+
+    add_to_file "/etc/subuid" "${USER}:100000:65536"
+    add_to_file "/etc/subgid" "${USER}:100000:65536"
+
     # Run commands as root
     sudo bash -c 'echo "net.ipv4.ip_unprivileged_port_start=25" > /etc/sysctl.conf';
 
@@ -46,7 +59,6 @@ if [ "${PODMAN}" == "yes" ]; then
     # Comment the first line of /usr/share/containers/mounts.conf
     sudo sed -i '1s/^/# /' /usr/share/containers/mounts.conf;
 fi
-
 
 wget https://raw.githubusercontent.com/${GITHUB_USER}/docauposte2/main/install-docauposte2.sh   && chmod +x install-docauposte2.sh && bash install-docauposte2.sh ${GITHUB_USER} ${PODMAN};
 
