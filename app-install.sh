@@ -83,7 +83,8 @@ fi
 
 git clone https://github.com/${GITHUB_USER}/apppo.git;
 
-cd apppo;
+cd apppo/;
+
 if [ "${PODMAN}" == "yes" ]; then
     envsubst < template.yml > apppo.yml;
     podman play kube apppo.yml;
