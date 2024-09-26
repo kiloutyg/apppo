@@ -48,7 +48,7 @@ if [ "${PODMAN}" == "yes" ]; then
     add_to_file "/etc/subgid" "${USER}:100000:65536"
 
     # Run commands as root
-    sudo bash -c 'echo "net.ipv4.ip_unprivileged_port_start=25" > /etc/sysctl.conf';
+    sudo bash -c 'echo "net.ipv4.ip_unprivileged_port_start=25" > /etc/sysctl.d/user_priv_ports.conf';
 
     # Apply the changes
     sudo sysctl --system;
