@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# Function to check for uppercase characters
+contains_uppercase() {
+    [[ "$1" =~ [A-Z] ]]
+}
+
 # Ask the user for name of its github user 
 while true; do
     read -p "Name of your github user (example: polangres) :  " GITHUB_USER
