@@ -85,8 +85,8 @@ git clone https://github.com/${GITHUB_USER}/apppo.git;
 
 cd apppo;
 if [ "${PODMAN}" == "yes" ]; then
-    envsubst < template.yaml > apppo.yaml;
-    podman play kube apppo.yaml;
+    envsubst < template.yml > apppo.yml;
+    podman play kube apppo.yml;
     else
     docker compose up --build -d;
 fi
