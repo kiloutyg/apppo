@@ -21,7 +21,7 @@ done
 
 # Ask the user if he wants to install the app with podman
 while true; do
-read -p "Do you want to install the app with podman ? (yes/no) : "  ANSWER;
+read -p "Do you want to install the app with podman ? (yes/no) : " PODMAN;
 # Check if the user answered yes or no
     if [ "${PODMAN}" == "yes" ] || [ "${PODMAN}" == "no" ]; then 
         break
