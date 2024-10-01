@@ -107,7 +107,7 @@ if [ "${ANSWER}" == "yes" ]; then
     echo "opsign not installed";
 fi
 
-    read -p "Address of the git repository (ssh or http // default: https://github.com/${GITHUB_USER}/apppo ) :  " GIT_ADDRESS;
+    read -p "Address of the git repository (default: https://github.com/${GITHUB_USER}/apppo ) :  " GIT_ADDRESS;
     if [ -z "${GIT_ADDRESS}" ]
     then
         GIT_ADDRESS="https://github.com/${GITHUB_USER}/apppo"
