@@ -60,9 +60,36 @@ if [ "${PODMAN}" == "yes" ]; then
     sudo sed -i '1s/^/# /' /usr/share/containers/mounts.conf;
 fi
 
-wget https://raw.githubusercontent.com/${GITHUB_USER}/docauposte2/main/install-docauposte2.sh   && chmod +x install-docauposte2.sh && bash install-docauposte2.sh ${GITHUB_USER} ${PODMAN};
 
-wget https://raw.githubusercontent.com/${GITHUB_USER}/efnc/main/install-eFNC2.sh  && chmod +x install-eFNC2.sh && bash install-eFNC2.sh ${GITHUB_USER} ${PODMAN};
+while true; do
+read -p "Do you want to install docauposte2 ? (yes/no) : "  ANSWER_DAP;
+# Check if the user answered yes or no
+    if [ "${ANSWER_DAP}" == "yes" ] || [ "${ANSWER_DAP}" == "no" ]; then 
+        break
+        else
+            echo "Please answer by yes or no";
+    fi
+done
+
+if [ "${ANSWER_DAP}" == "yes" ]; then
+    wget https://raw.githubusercontent.com/${GITHUB_USER}/docauposte2/main/install-docauposte2.sh   && chmod +x install-docauposte2.sh && bash install-docauposte2.sh ${GITHUB_USER} ${PODMAN};
+fi
+
+
+while true; do
+read -p "Do you want to install eFNC2 ? (yes/no) : "  ANSWER_EFNC;
+# Check if the user answered yes or no
+    if [ "${ANSWER_EFNC}" == "yes" ] || [ "${ANSWER_EFNC}" == "no" ]; then 
+        break
+        else
+            echo "Please answer by yes or no";
+    fi
+done
+
+if [ "${ANSWER_EFNC}" == "yes" ]; then
+    wget https://raw.githubusercontent.com/${GITHUB_USER}/eFNC2/main/install-efnc2.sh   && chmod +x install-efnc2.sh && bash install-efnc2.sh ${GITHUB_USER} ${PODMAN};
+fi
+
 
 while true; do
 read -p "Do you want to install opsign ? (yes/no) : "  ANSWER;
