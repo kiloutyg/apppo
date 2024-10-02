@@ -28,7 +28,7 @@ spec:
       type: File
     name: run-user-podman.sock
   - hostPath:
-      path: ./traefik.yml
+      path: ${PWD}/traefik.yml
       type: File
     name: traefik-config
 ---
@@ -63,10 +63,10 @@ spec:
   dnsPolicy: Default
   volumes:
   - hostPath:
-      path: ./html
+      path: ${PWD}/html
       type: Directory
     name: apppo-html
   - hostPath:
-      path: ./default.conf
+      path: ${PWD}/default.conf
       type: File
     name: apppo-default.conf
