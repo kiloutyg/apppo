@@ -5,6 +5,7 @@ metadata:
   labels:
     app: traefik
 spec:
+  restartPolicy: Always
   containers:
   - image: docker.io/library/traefik:v3.0
     name: traefik
@@ -44,6 +45,7 @@ metadata:
     traefik.http.services.homepage.loadbalancer.server.port: 80
     traefik.http.middlewares.strip-homepage-prefix.stripPrefix.prefixes: /
 spec:
+  restartPolicy: Always
   containers:
   - name: homepage
     image: docker.io/library/nginx:latest
