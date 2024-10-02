@@ -3,9 +3,7 @@
 # Docker configuration backend
 providers:
   docker:
-    # exposedByDefault: false
     exposedByDefault: true
-    network: vpcbr
 
 # API and dashboard configuration
 api:
@@ -18,3 +16,18 @@ entryPoints:
     address: ":80"
   mariadb:
     address: ":3306"
+#   smtp:
+#     address: ":25"
+  
+# tcp:
+#   routers:
+#     smtp-router:
+#       entryPoints:
+#         - smtp
+#       service: smtp-service
+#   services:
+#     smtp-service:
+#       loadBalancer:
+#         servers:
+#           - address: "smtp.corp.ponet:25"
+
