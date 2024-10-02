@@ -5,21 +5,18 @@ services:
       - "80:80"
       - "8070:8080"
     volumes:
-      # - /var/run/docker.sock:/var/run/docker.sock
-      - /run/user/846632034/podman/podman.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.yml:/etc/traefik/traefik.yml
-      
     restart: unless-stopped
     networks:
-      - vpcbr
-      # vpcbr:
-    #     ipv4_address: 172.24.0.254
-      # docauposte2_vpcbr:
-    #     ipv4_address: 172.21.0.254
-      # efnc_vpcbr:
-    #     ipv4_address: 172.22.0.254
-      # opsign_vpcbr:
-    #     ipv4_address: 172.23.0.254
+      vpcbr:
+        ipv4_address: 172.24.0.254
+      docauposte2_vpcbr:
+        ipv4_address: 172.21.0.254
+      efnc_vpcbr:
+        ipv4_address: 172.22.0.254
+      opsign_vpcbr:
+        ipv4_address: 172.23.0.254
 
 
   homepage:
@@ -30,29 +27,26 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.homepage.rule=Path(`/`)"
-      - "traefik.http.routers.homepage.entrypoints=web"
-      - "traefik.http.services.homepage.loadbalancer.server.port=80"
       - "traefik.http.routers.homepage.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.homepage.entrypoints=web"
+      - "traefik.http.services.traefik-home.loadbalancer.server.port=80"
       - "traefik.http.routers.homepage.middlewares=strip-homepage-prefix"
       - "traefik.http.middlewares.strip-homepage-prefix.stripPrefix.prefixes=/"
     networks:
-      - vpcbr
-    #   vpcbr:
-    #     ipv4_address:  172.24.0.253
+      vpcbr:
+        ipv4_address:  172.24.0.253
 
 
 networks:
   vpcbr:
+    driver: bridge
     ipam:
-      driver: default
       config:
         - subnet: 172.24.0.0/16
-          ip_range: 172.24.1.0/16
-          # gateway: 172.24.1.1
-#   docauposte2_vpcbr:
-#     external: true
-#   efnc_vpcbr:
-#     external: true
-#   opsign_vpcbr:
-#     external: true
+          gateway: 172.24.0.1
+  docauposte2_vpcbr:
+    external: true
+  efnc_vpcbr:
+    external: true
+  opsign_vpcbr:
+    external: true
