@@ -50,6 +50,10 @@ if [ "${PODMAN}" == "yes" ]; then
     # Run commands as root
     sudo bash -c 'echo "net.ipv4.ip_unprivileged_port_start=25" > /etc/sysctl.d/user_priv_ports.conf';
 
+    # Initialize podman.socket and service as a sudoer
+    sudo systemctl start --now podman.socket;
+    sudo systemctl enable --now podman.socket;
+
     # Apply the changes
     sudo sysctl --system;
 
