@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: traefik
+  name: traefik-proxy-pod
   labels:
-    app: traefik
+    app: traefik-proxy
 spec:
   restartPolicy: Always
   containers:
   - image: docker.io/library/traefik:v3.0
-    name: traefik
+    name: proxy
     ports:
     - containerPort: 80
       hostPort: 80
@@ -35,19 +35,19 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: homepage
+  name: homepage-nginx-pod
   labels:
-    app: homepage
+    app: homepage-nginx
     traefik.enable: true
-    traefik.http.routers.homepage.rule: PathPrefix(`/`)
-    traefik.http.routers.homepage.entrypoints: web
-    traefik.http.routers.homepage.middlewares: strip-homepage-prefix
-    traefik.http.services.homepage.loadbalancer.server.port: 80
-    traefik.http.middlewares.strip-homepage-prefix.stripPrefix.prefixes: /
+    traefik.http.routers.homepage-nginx.rule: PathPrefix(`/`)
+    traefik.http.routers.homepage-nginx.entrypoints: web
+    traefik.http.routers.homepage-nginx.middlewares: strip-homepage-nginx-prefix
+    traefik.http.services.homepage-nginx.loadbalancer.server.port: 80
+    traefik.http.middlewares.strip-homepage-nginx-prefix.stripPrefix.prefixes: /
 spec:
   restartPolicy: Always
   containers:
-  - name: homepage
+  - name: nginx
     image: docker.io/library/nginx:latest
     command: ["/bin/sh", "-c"]
     args:

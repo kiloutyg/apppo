@@ -14,8 +14,8 @@ api:
 entryPoints:
   web:
     address: ":80"
-  mariadb:
-    address: ":3306"
+  # mariadb:
+  #   address: ":3306"
 #   smtp:
 #     address: ":25"
   
