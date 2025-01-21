@@ -1,4 +1,4 @@
-# dynamic_conf.yml
+# dynamic.yml
 http:
   routers:
     my-router:
@@ -14,3 +14,4 @@ http:
       loadBalancer:
         servers:
           - url: http://docauposte-web-pod:80
+          - url: http://homepage-nginx-pod:80

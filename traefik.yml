@@ -42,6 +42,10 @@ certificatesResolvers:
   myresolver:
     acme:
       email: florian.dkhissi@opmobility.com
-      storage: /etc/traefik/acme/acme.json
+      storage:
+        /etc/traefik/acme/acme.json
+        # Remove or comment out the staging server URL
+        # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      caServer: https://acme-v02.api.letsencrypt.org/directory
       httpChallenge:
         entryPoint: web
