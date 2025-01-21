@@ -4,32 +4,44 @@
 providers:
   docker:
     exposedByDefault: true
+# providers:
+#   file:
+#     filename: /etc/traefik/dynamic_conf.yml
+#     watch: true
 
-# API and dashboard configuration
 api:
-  insecure: true
   dashboard: true
+  # Secure the dashboard (replace with your chosen username and password)
+  insecure: true
 
 #Entrypoint configuration
 entryPoints:
   web:
     address: ":80"
-  web-https:
+    # Redirect HTTP to HTTPS
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+  websecure:
     address: ":443"
-  # mariadb:
-  #   address: ":3306"
-#   smtp:
-#     address: ":25"
+    http:
+      tls:
+        # Remove certResolver since we're using our own certs
+        certResolver: myresolver
 
-# tcp:
-#   routers:
-#     smtp-router:
-#       entryPoints:
-#         - smtp
-#       service: smtp-service
-#   services:
-#     smtp-service:
-#       loadBalancer:
-#         servers:
-#           - address: "smtp.corp.ponet:25"
+# tls:
+#   certificates:
+#     - certFile: "/certs/yourcert.crt"
+#       keyFile: "/certs/yourkey.key"
 
+# Remove certificatesResolvers if not using Let's Encrypt
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: florian.dkhissi@opmobility.com
+      storage: /etc/traefik/acme/acme.json
+      httpChallenge:
+        entryPoint: web

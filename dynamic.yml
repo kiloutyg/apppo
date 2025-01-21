@@ -1,0 +1,16 @@
+# dynamic_conf.yml
+http:
+  routers:
+    my-router:
+      rule: "Host(`sanclp0031`)"
+      service: my-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: myresolver
+
+  services:
+    my-service:
+      loadBalancer:
+        servers:
+          - url: http://docauposte-web-pod:80
