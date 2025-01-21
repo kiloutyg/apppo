@@ -50,11 +50,18 @@ if [ "${PODMAN}" == "yes" ]; then
     # Run commands as root
     sudo bash -c 'echo "net.ipv4.ip_unprivileged_port_start=25" > /etc/sysctl.d/user_priv_ports.conf';
 
+    # Initialize podman.socket and service as a sudoer
+    sudo systemctl start --now podman.socket;
+    sudo systemctl enable --now podman.socket;
+
     # Apply the changes
     sudo sysctl --system;
 
     systemctl --user start podman.socket;
     systemctl --user enable podman.socket;
+
+    systemctl --user start podman-restart.service;
+    systemctl --user enable podman-restart.service;
 
     # Comment the first line of /usr/share/containers/mounts.conf
     sudo sed -i '1s/^/# /' /usr/share/containers/mounts.conf;

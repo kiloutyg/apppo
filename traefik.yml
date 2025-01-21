@@ -14,11 +14,13 @@ api:
 entryPoints:
   web:
     address: ":80"
-  mariadb:
-    address: ":3306"
+  web-https:
+    address: ":443"
+  # mariadb:
+  #   address: ":3306"
 #   smtp:
 #     address: ":25"
-  
+
 # tcp:
 #   routers:
 #     smtp-router:
