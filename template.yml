@@ -101,9 +101,10 @@ spec:
         - mountPath: /etc/localtime
           name: localtime-settings
       resources:
-        requests:
+        limits:
           memory: 200Mi
           ephemeral-storage: 500Mi
+        requests:
           cpu: 0.5
   dnsPolicy: Default
   volumes:
