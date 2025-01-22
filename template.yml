@@ -25,6 +25,14 @@ spec:
         - mountPath: /etc/traefik/traefik.yml
           name: traefik-config
           readOnly: true
+        - mountPath: /etc/localtime
+          name: localtime-settings
+        - mountPath: /etc/traefik/acme/acme.json
+          name: traefik-acme
+          readOnly: true
+        # - mountPath: /certs
+        #   name: tls-certs
+        #   readOnly: true
   volumes:
     - hostPath:
         path: ${XDG_RUNTIME_DIR}/podman/podman.sock
@@ -34,6 +42,17 @@ spec:
         path: ${PWD}/traefik.yml
         type: File
       name: traefik-config
+    - hostPath:
+        path: /etc/localtime
+      name: localtime-settings
+    - hostPath:
+        path: ./acme.json
+        type: FileOrCreate
+      name: traefik-acme
+    # - hostPath:
+    #     path: ./certs
+    #     type: Directory
+    #   name: tls-certs
 ---
 apiVersion: v1
 kind: LimitRange
@@ -42,10 +61,11 @@ metadata:
   namespace: homepage-nginx-limits
 spec:
   limits:
-    - type: Container
-      default:
+    - defaultRequest:
         memory: 200Mi
         ephemeral-storage: 50Mi
+        cpu: 0.5
+      type: Container
 ---
 apiVersion: v1
 kind: Pod
@@ -55,8 +75,10 @@ metadata:
   labels:
     app: homepage-nginx
     traefik.enable: true
-    traefik.http.routers.homepage-nginx.rule: PathPrefix(`/`)
-    traefik.http.routers.homepage-nginx.entrypoints: web
+    traefik.http.routers.homepage-nginx.rule: "Host(`${HOSTNAME}`) && PathPrefix(`/`)"
+    traefik.http.routers.homepage-nginx.entrypoints: websecure
+    traefik.http.routers.homepage-nginx.tls: true
+    traefik.http.routers.homepage-nginx.tls.certresolver: myresolver
     traefik.http.routers.homepage-nginx.middlewares: strip-homepage-nginx-prefix
     traefik.http.services.homepage-nginx.loadbalancer.server.port: 80
     traefik.http.middlewares.strip-homepage-nginx-prefix.stripPrefix.prefixes: /
@@ -76,6 +98,14 @@ spec:
           name: apppo-html
         - mountPath: /etc/nginx/conf.d/default.conf
           name: apppo-default.conf
+        - mountPath: /etc/localtime
+          name: localtime-settings
+      resources:
+        limits:
+          memory: 200Mi
+          ephemeral-storage: 500Mi
+        requests:
+          cpu: 0.5
   dnsPolicy: Default
   volumes:
     - hostPath:
@@ -86,3 +116,6 @@ spec:
         path: ${PWD}/default.conf
         type: File
       name: apppo-default.conf
+    - hostPath:
+        path: /etc/localtime
+      name: localtime-settings
