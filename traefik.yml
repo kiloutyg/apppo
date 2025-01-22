@@ -1,19 +1,12 @@
 ## traefik.yml
-
 # Docker configuration backend
 providers:
   docker:
     exposedByDefault: true
-# providers:
-#   file:
-#     filename: /etc/traefik/dynamic_conf.yml
-#     watch: true
-
 api:
   dashboard: true
   # Secure the dashboard (replace with your chosen username and password)
   insecure: true
-
 #Entrypoint configuration
 entryPoints:
   web:
@@ -31,12 +24,6 @@ entryPoints:
       tls:
         # Remove certResolver since we're using our own certs
         certResolver: myresolver
-
-# tls:
-#   certificates:
-#     - certFile: "/certs/yourcert.crt"
-#       keyFile: "/certs/yourkey.key"
-
 # Remove certificatesResolvers if not using Let's Encrypt
 certificatesResolvers:
   myresolver:
@@ -49,3 +36,7 @@ certificatesResolvers:
       caServer: https://acme-v02.api.letsencrypt.org/directory
       httpChallenge:
         entryPoint: web
+# tls:
+#   certificates:
+#     - certFile: "/certs/yourcert.crt"
+#       keyFile: "/certs/yourkey.key"

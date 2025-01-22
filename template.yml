@@ -29,10 +29,7 @@ spec:
           name: localtime-settings
         - mountPath: /etc/traefik/acme/acme.json
           name: traefik-acme
-        # - mountPath: /etc/traefik/dynamic_conf.yml
-        #   subPath: dynamic_conf.yml
-        #   name: traefik-dynamic-config
-        #   readOnly: true
+          readOnly: true
         # - mountPath: /certs
         #   name: tls-certs
         #   readOnly: true
@@ -53,10 +50,6 @@ spec:
         type: FileOrCreate
       name: traefik-acme
     # - hostPath:
-    #     path: ./dynamic_conf.yml
-    #     type: File
-    #   name: traefik-dynamic-config
-    # - hostPath:
     #     path: ./certs
     #     type: Directory
     #   name: tls-certs
@@ -68,10 +61,11 @@ metadata:
   namespace: homepage-nginx-limits
 spec:
   limits:
-    - type: Container
-      default:
+    - defaultRequest:
         memory: 200Mi
         ephemeral-storage: 50Mi
+        cpu: 0.5
+      type: Container
 ---
 apiVersion: v1
 kind: Pod
@@ -106,6 +100,11 @@ spec:
           name: apppo-default.conf
         - mountPath: /etc/localtime
           name: localtime-settings
+      resources:
+        requests:
+          memory: 200Mi
+          ephemeral-storage: 500Mi
+          cpu: 0.5
   dnsPolicy: Default
   volumes:
     - hostPath:
