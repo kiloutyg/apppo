@@ -1,3 +1,4 @@
 html/traefik.log
 apppo.yml
 lan-apps.ad.ponet.*
+./certs/*
