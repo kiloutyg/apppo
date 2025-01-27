@@ -30,9 +30,9 @@ spec:
         - mountPath: /etc/traefik/acme/acme.json
           name: traefik-acme
           readOnly: true
-        # - mountPath: /certs
-        #   name: tls-certs
-        #   readOnly: true
+        - mountPath: /certs
+          name: tls-certs
+          readOnly: true
   volumes:
     - hostPath:
         path: ${XDG_RUNTIME_DIR}/podman/podman.sock
@@ -49,10 +49,10 @@ spec:
         path: ./acme.json
         type: FileOrCreate
       name: traefik-acme
-    # - hostPath:
-    #     path: ./certs
-    #     type: Directory
-    #   name: tls-certs
+    - hostPath:
+        path: ./certs
+        type: Directory
+      name: tls-certs
 ---
 apiVersion: v1
 kind: LimitRange
@@ -78,7 +78,7 @@ metadata:
     traefik.http.routers.homepage-nginx.rule: "Host(`${HOSTNAME}`) && PathPrefix(`/`)"
     traefik.http.routers.homepage-nginx.entrypoints: websecure
     traefik.http.routers.homepage-nginx.tls: true
-    traefik.http.routers.homepage-nginx.tls.certresolver: myresolver
+    # traefik.http.routers.homepage-nginx.tls.certresolver: myresolver
     traefik.http.routers.homepage-nginx.middlewares: strip-homepage-nginx-prefix
     traefik.http.services.homepage-nginx.loadbalancer.server.port: 80
     traefik.http.middlewares.strip-homepage-nginx-prefix.stripPrefix.prefixes: /

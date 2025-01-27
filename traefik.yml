@@ -25,17 +25,17 @@ entryPoints:
         # Remove certResolver since we're using our own certs
 #         certResolver: myresolver
 # # Remove certificatesResolvers if not using Let's Encrypt
-# certificatesResolvers:
-#   myresolver:
-#     acme:
-#       email: florian.dkhissi@opmobility.com
-#       storage:
-#         /etc/traefik/acme/acme.json
-#         # Remove or comment out the staging server URL
-#         # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-#       caServer: https://acme-v02.api.letsencrypt.org/directory
-#       httpChallenge:
-#         entryPoint: web
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: florian.dkhissi@opmobility.com
+      storage:
+        /etc/traefik/acme/acme.json
+        # Remove or comment out the staging server URL
+        # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      httpChallenge:
+        entryPoint: web
 tls:
   certificates:
     - certFile: "/certs/lan-apps.ad.ponet.pem"
