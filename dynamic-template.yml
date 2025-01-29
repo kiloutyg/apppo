@@ -31,13 +31,24 @@ http:
 
     # New router for redirection
     redirect-${DOMAIN_NAME}:
-      rule: Host(`${DOMAIN_NAME}.corp.ponet`)
+      rule: Host(`${DOMAIN_NAME}.corp.ponet`) || Host(`${DOMAIN_NAME}.ad.ponet`) 
       entryPoints:
         - web
         - websecure
       priority: 100
       middlewares:
         - redirect-to-${DOMAIN_NAME}
+      service: noop@internal
+      tls:
+
+    redirect-${HOSTNAME}:
+      rule: Host(`${HOSTNAME}.ad.ponet`) || Host(`${HOSTNAME}.corp.ponet`)
+      entryPoints:
+        - web
+        - websecure
+      priority: 100
+      middlewares:
+        - redirect-to-${HOSTNAME}
       service: noop@internal
       tls:
 
@@ -52,4 +63,10 @@ http:
       redirectRegex:
         regex: "^https://${DOMAIN_NAME}(.corp|.ad).ponet"
         replacement: "https://${DOMAIN_NAME}${1}"
+        permanent: true
+
+    redirect-to-${HOSTNAME}:
+      redirectRegex:
+        regex: "^https://${HOSTNAME}(.corp|.ad).ponet"
+        replacement: "https://${HOSTNAME}${1}"
         permanent: true
