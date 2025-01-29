@@ -1,0 +1,63 @@
+# dynamic.yml
+
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: florian.dkhissi@opmobility.com
+      storage:
+        /etc/traefik/acme/acme.json
+        # Remove or comment out the staging server URL
+        # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      httpChallenge:
+        entryPoint: web
+
+# tls:
+#   options:
+#     default:
+#       minVersion: VersionTLS12
+#       sniStrict: true
+#   certificates:
+#     - certFile: "/certs/lan-apps.ad.ponet.pem"
+#       keyFile: "/certs/lan-apps.ad.ponet.key"
+#       stores:
+#         - default
+
+http:
+  routers:
+    traefik-dashboard:
+      rule: "Host(`${DOMAIN_NAME}`) && PathPrefix(`/traefik`)  || Host(`${HOSTNAME}`) && PathPrefix(`/traefik`) "
+      entryPoints:
+        - "websecure"
+      service: "api@internal"
+      middlewares:
+        - "dashboard-auth"
+      tls:
+        certResolver: myresolver
+
+
+    # New router for redirection
+    redirect-${DOMAIN_NAME}:
+      rule: Host(`${DOMAIN_NAME}.corp.ponet`)
+      entryPoints:
+        - web
+        - websecure
+      priority: 100
+      middlewares:
+        - redirect-to-${DOMAIN_NAME}
+      service: noop@internal
+      tls:
+        certResolver: myresolver
+
+  middlewares:
+    dashboard-auth:
+      basicAuth:
+        users:
+          - "admin:$apr1$JibIH1e/$h3oqCp/zN/4iB.or0KNEY."
+
+    # Middleware for redirection
+    redirect-to-${DOMAIN_NAME}:
+      redirectRegex:
+        regex: "^https://${DOMAIN_NAME}.(corp|ad).ponet"
+        replacement: "https://${DOMAIN_NAME}${1}"
+        permanent: true

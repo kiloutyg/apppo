@@ -25,11 +25,13 @@ spec:
         - mountPath: /etc/traefik/traefik.yml
           name: traefik-config
           readOnly: true
+        - mountPath: /etc/traefik/dynamic.yml
+          name: dynamic-config
+          readOnly: true
         - mountPath: /etc/localtime
           name: localtime-settings
         - mountPath: /etc/traefik/acme/acme.json
           name: traefik-acme
-          readOnly: true
         - mountPath: /certs
           name: tls-certs
           readOnly: true
@@ -46,13 +48,17 @@ spec:
         path: /etc/localtime
       name: localtime-settings
     - hostPath:
-        path: ./acme.json
+        path: ${PWD}/acme.json
         type: FileOrCreate
       name: traefik-acme
     - hostPath:
-        path: ./certs
+        path: ${PWD}/certs
         type: Directory
       name: tls-certs
+    - hostPath:
+        path: ${PWD}/dynamic.yml
+        type: File
+      name: dynamic-config
 ---
 apiVersion: v1
 kind: LimitRange
@@ -75,7 +81,7 @@ metadata:
   labels:
     app: homepage-nginx
     traefik.enable: true
-    traefik.http.routers.homepage-nginx.rule: "Host(`${HOSTNAME}`) && PathPrefix(`/`)"
+    traefik.http.routers.homepage-nginx.rule: "Host(`${DOMAIN_NAME}`) && PathPrefix(`/`) || Host(`${HOSTNAME}`) && PathPrefix(`/`)"
     traefik.http.routers.homepage-nginx.entrypoints: websecure
     traefik.http.routers.homepage-nginx.tls: true
     # traefik.http.routers.homepage-nginx.tls.certresolver: myresolver
