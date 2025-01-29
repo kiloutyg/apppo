@@ -4,3 +4,4 @@ lan-apps.ad.ponet.*
 ./certs/*
 *.pem
 *.key
+dynamic.yml

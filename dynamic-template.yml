@@ -1,0 +1,72 @@
+# dynamic.yml
+
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: "/certs/lan-apps.crt"
+        keyFile: "/certs/lan-apps.key"
+  options:
+    default:
+      minVersion: VersionTLS12
+      sniStrict: true
+  certificates:
+    - certFile: "/certs/lan-apps.crt"
+      keyFile: "/certs/lan-apps.key"
+      stores:
+        - default
+
+
+
+http:
+  routers:
+    traefik-dashboard:
+      rule: "Host(`${DOMAIN_NAME}`) && PathPrefix(`/traefik`)  || Host(`${HOSTNAME}`) && PathPrefix(`/traefik`) "
+      entryPoints:
+        - "websecure"
+      service: "api@internal"
+      middlewares:
+        - "dashboard-auth"
+      tls:
+
+    # New router for redirection
+    redirect-${DOMAIN_NAME}:
+      rule: Host(`${DOMAIN_NAME}.corp.ponet`) || Host(`${DOMAIN_NAME}.ad.ponet`) 
+      entryPoints:
+        - web
+        - websecure
+      priority: 100
+      middlewares:
+        - redirect-to-${DOMAIN_NAME}
+      service: noop@internal
+      tls:
+
+    redirect-${HOSTNAME}:
+      rule: Host(`${HOSTNAME}.ad.ponet`) || Host(`${HOSTNAME}.corp.ponet`)
+      entryPoints:
+        - web
+        - websecure
+      priority: 100
+      middlewares:
+        - redirect-to-${HOSTNAME}
+      service: noop@internal
+      tls:
+
+  middlewares:
+    dashboard-auth:
+      basicAuth:
+        users:
+          - "admin:$apr1$JibIH1e/$h3oqCp/zN/4iB.or0KNEY."
+
+    # Middleware for redirection
+    redirect-to-${DOMAIN_NAME}:
+      redirectRegex:
+        regex: "^https://${DOMAIN_NAME}(.corp|.ad).ponet"
+        replacement: "https://${DOMAIN_NAME}${1}"
+        permanent: true
+
+    redirect-to-${HOSTNAME}:
+      redirectRegex:
+        regex: "^https://${HOSTNAME}(.corp|.ad).ponet"
+        replacement: "https://${HOSTNAME}${1}"
+        permanent: true
