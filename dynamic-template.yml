@@ -1,27 +1,22 @@
 # dynamic.yml
 
-certificatesResolvers:
-  myresolver:
-    acme:
-      email: florian.dkhissi@opmobility.com
-      storage:
-        /etc/traefik/acme/acme.json
-        # Remove or comment out the staging server URL
-        # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      caServer: https://acme-v02.api.letsencrypt.org/directory
-      httpChallenge:
-        entryPoint: web
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: "/certs/lan-apps.crt"
+        keyFile: "/certs/lan-apps.key"
+  options:
+    default:
+      minVersion: VersionTLS12
+      sniStrict: true
+  certificates:
+    - certFile: "/certs/lan-apps.crt"
+      keyFile: "/certs/lan-apps.key"
+      stores:
+        - default
 
-# tls:
-#   options:
-#     default:
-#       minVersion: VersionTLS12
-#       sniStrict: true
-#   certificates:
-#     - certFile: "/certs/lan-apps.ad.ponet.pem"
-#       keyFile: "/certs/lan-apps.ad.ponet.key"
-#       stores:
-#         - default
+
 
 http:
   routers:
@@ -33,8 +28,6 @@ http:
       middlewares:
         - "dashboard-auth"
       tls:
-        certResolver: myresolver
-
 
     # New router for redirection
     redirect-${DOMAIN_NAME}:
@@ -47,7 +40,6 @@ http:
         - redirect-to-${DOMAIN_NAME}
       service: noop@internal
       tls:
-        certResolver: myresolver
 
   middlewares:
     dashboard-auth:
@@ -58,6 +50,6 @@ http:
     # Middleware for redirection
     redirect-to-${DOMAIN_NAME}:
       redirectRegex:
-        regex: "^https://${DOMAIN_NAME}.(corp|ad).ponet"
+        regex: "^https://${DOMAIN_NAME}(.corp|.ad).ponet"
         replacement: "https://${DOMAIN_NAME}${1}"
         permanent: true

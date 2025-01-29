@@ -16,9 +16,6 @@ spec:
         - containerPort: 443
           hostPort: 443
           protocol: TCP
-        - containerPort: 8080
-          hostPort: 8070
-          protocol: TCP
       volumeMounts:
         - mountPath: /var/run/docker.sock:z
           name: run-user-podman.sock
