@@ -1,14 +1,36 @@
 apiVersion: v1
+kind: LimitRange
+metadata:
+  name: traefik-proxy-pod-limits-range
+  namespace: traefik-proxy-pod-limits
+spec:
+  limits:
+    - defaultRequest:
+        memory: 4000Mi
+        ephemeral-storage: 5000Mi
+        cpu: 4
+      type: Container
+---
+apiVersion: v1
 kind: Pod
 metadata:
   name: traefik-proxy-pod
+  namespace: traefik-proxy-pod-limits
   labels:
     app: traefik-proxy
 spec:
+  securityContext:
+    runAsNonRoot: true
+  automountServiceAccountToken: false
   restartPolicy: Always
   containers:
-    - image: docker.io/library/traefik:v3.0
-      name: proxy
+    - name: proxy
+      image: docker.io/library/traefik:v3.3.3
+      securityContext:
+        allowPrivilegeEscalation: false
+        # capabilities:
+        #   drop:
+        #     - ALL
       ports:
         - containerPort: 80
           hostPort: 80
@@ -19,6 +41,7 @@ spec:
       volumeMounts:
         - mountPath: /var/run/docker.sock:z
           name: run-user-podman.sock
+          readOnly: true
         - mountPath: /etc/traefik/traefik.yml
           name: traefik-config
           readOnly: true
@@ -27,11 +50,17 @@ spec:
           readOnly: true
         - mountPath: /etc/localtime
           name: localtime-settings
-        - mountPath: /etc/traefik/acme/acme.json
-          name: traefik-acme
+          readOnly: true
         - mountPath: /certs
           name: tls-certs
           readOnly: true
+      resources:
+        limits:
+          memory: 4000Mi
+          ephemeral-storage: 5000Mi
+        requests:
+          cpu: 4
+  dnsPolicy: Default
   volumes:
     - hostPath:
         path: ${XDG_RUNTIME_DIR}/podman/podman.sock
@@ -44,10 +73,6 @@ spec:
     - hostPath:
         path: /etc/localtime
       name: localtime-settings
-    - hostPath:
-        path: ${PWD}/acme.json
-        type: FileOrCreate
-      name: traefik-acme
     - hostPath:
         path: ${PWD}/certs
         type: Directory
@@ -78,18 +103,25 @@ metadata:
   labels:
     app: homepage-nginx
     traefik.enable: true
-    traefik.http.routers.homepage-nginx.rule: "Host(`${DOMAIN_NAME}`) && PathPrefix(`/`) || Host(`${HOSTNAME}`) && PathPrefix(`/`)"
+    traefik.http.routers.homepage-nginx.rule: "Host(`${DOMAIN_NAME}.corp.ponet`) && PathPrefix(`/`) || Host(`${HOSTNAME}.ad.ponet`) && PathPrefix(`/`)"
     traefik.http.routers.homepage-nginx.entrypoints: websecure
     traefik.http.routers.homepage-nginx.tls: true
-    # traefik.http.routers.homepage-nginx.tls.certresolver: myresolver
     traefik.http.routers.homepage-nginx.middlewares: strip-homepage-nginx-prefix
     traefik.http.services.homepage-nginx.loadbalancer.server.port: 80
     traefik.http.middlewares.strip-homepage-nginx-prefix.stripPrefix.prefixes: /
 spec:
+  securityContext:
+    runAsNonRoot: true
+  automountServiceAccountToken: false
   restartPolicy: Always
   containers:
     - name: nginx
-      image: docker.io/library/nginx:latest
+      image: docker.io/library/nginx:stable-alpine3.20
+      securityContext:
+        allowPrivilegeEscalation: false
+        # capabilities:
+        #   drop:
+        #     - ALL
       command: ["/bin/sh", "-c"]
       args:
         - |
