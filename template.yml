@@ -78,7 +78,7 @@ metadata:
   labels:
     app: homepage-nginx
     traefik.enable: true
-    traefik.http.routers.homepage-nginx.rule: "Host(`${DOMAIN_NAME}`) && PathPrefix(`/`) || Host(`${HOSTNAME}`) && PathPrefix(`/`)"
+    traefik.http.routers.homepage-nginx.rule: "Host(`${DOMAIN_NAME}.corp.ponet`) && PathPrefix(`/`) || Host(`${HOSTNAME}.ad.ponet`) && PathPrefix(`/`)"
     traefik.http.routers.homepage-nginx.entrypoints: websecure
     traefik.http.routers.homepage-nginx.tls: true
     # traefik.http.routers.homepage-nginx.tls.certresolver: myresolver
