@@ -5,3 +5,4 @@ certs/*
 *.pem
 *.key
 dynamic.yml
+acme.json
