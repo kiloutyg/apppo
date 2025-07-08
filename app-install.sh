@@ -94,7 +94,7 @@ read -p "Do you want to install eFNC2 ? (yes/no) : "  ANSWER_EFNC;
 done
 
 if [ "${ANSWER_EFNC}" == "yes" ]; then
-    wget https://raw.githubusercontent.com/${GITHUB_USER}/eFNC2/main/install-efnc2.sh   && chmod +x install-efnc2.sh && bash install-efnc2.sh ${GITHUB_USER} ${PODMAN};
+    wget https://raw.githubusercontent.com/${GITHUB_USER}/efnc/main/install-efnc2.sh   && chmod +x install-efnc2.sh && bash install-efnc2.sh ${GITHUB_USER} ${PODMAN};
 fi
 
 
