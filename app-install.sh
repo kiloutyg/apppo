@@ -62,9 +62,6 @@ if [ "${PODMAN}" == "yes" ]; then
 
     systemctl --user start podman-restart.service;
     systemctl --user enable podman-restart.service;
-
-    # Comment the first line of /usr/share/containers/mounts.conf
-    sudo sed -i '1s/^/# /' /usr/share/containers/mounts.conf;
 fi
 
 
