@@ -56,6 +56,7 @@ export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"'
     # Initialize podman.socket and service as a sudoer
     sudo systemctl start --now podman.socket;
     sudo systemctl enable --now podman.socket;
+    source ~/.bashrc
 
     # Apply the changes
     sudo sysctl --system;
