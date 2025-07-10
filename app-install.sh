@@ -47,6 +47,9 @@ if [ "${PODMAN}" == "yes" ]; then
     add_to_file "/etc/subuid" "${USER}:100000:65536"
     add_to_file "/etc/subgid" "${USER}:100000:65536"
 
+    add_to_file "~/.bashrc" 'export XDG_RUNTIME_DIR=/run/user/$(id -u)
+export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"'
+
     # Run commands as root
     sudo bash -c 'echo "net.ipv4.ip_unprivileged_port_start=25" > /etc/sysctl.d/user_priv_ports.conf';
 
